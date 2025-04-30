@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/domain/entities/user.entity';
-import { UserRepository } from 'src/domain/repositories/user.repository';
+import { UserRepository } from 'src/domain/repositories/user/user.repository';
 import { PrismaService } from '../prisma.service';
-import { RedisCacheService } from 'src/infrastructure/cache/redis.service';
+import { RedisCacheService } from 'src/infrastructure/data/cache/redis.service';
+import { User } from 'prisma/generated/client';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -11,8 +11,8 @@ export class PrismaUserRepository implements UserRepository {
     private readonly cacheService: RedisCacheService,
   ) {}
 
-  create(user: User): Promise<User> {
-    return this.prisma.user.create({ data: user });
+  create({ name, email, password }): Promise<User> {
+    return this.prisma.user.create({ data: { name, email, password } });
   }
 
   async findAll(): Promise<User[] | null> {
@@ -43,6 +43,10 @@ export class PrismaUserRepository implements UserRepository {
       }
     }
     return user;
+  }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { email } });
   }
 
   async update(id: string, user: Partial<User>): Promise<User> {

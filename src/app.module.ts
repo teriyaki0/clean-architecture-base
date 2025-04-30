@@ -4,7 +4,5 @@ import { PresentationModule } from './presentation/presentation.module';
 
 @Module({
   imports: [InfrastructureModule, PresentationModule],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

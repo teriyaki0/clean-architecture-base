@@ -1,5 +1,6 @@
 export interface IJwtPayload {
   id: string;
+  email: string;
 }
 
 export interface IJwtService {

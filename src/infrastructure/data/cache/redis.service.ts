@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { ICacheService } from 'src/domain/adapters/cache.interface';
 
 @Injectable()
-export class RedisCacheService {
+export class RedisCacheService implements ICacheService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   async get<T>(key: string): Promise<T | null> {
